@@ -1,0 +1,4 @@
+Test Solutions for the shorter bacon-essays.txt and hamlet.txt
+
+Most different square difference: courtier (square difference of 0.1947)
+Total comparative error: 0.097
