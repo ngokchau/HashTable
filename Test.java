@@ -65,8 +65,8 @@ public class Test
             v = ch.getNextKey();
         }
 
-        System.out.println("Most different square difference: " + word + " (square difference of " + max + ")");
-        System.out.println("Total comparative error: " + total);
+        System.out.println("Total square error: " + total);
+        System.out.println("Most different word: " + word + " (" + max + ")");
 	}
 
 }
