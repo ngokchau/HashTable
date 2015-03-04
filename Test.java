@@ -1,10 +1,5 @@
 public class Test
 {
-    private class List
-    {
-
-    }
-
 	public static void main(String[] args)
     {
 		FileInput.init();
@@ -12,13 +7,9 @@ public class Test
 		String[] s = FileInput.readShakespeare();
 		String[] b = FileInput.readBacon();
 
-		//TODO Initialize the hash tables
 		ChainingHash ch = new ChainingHash();
 		QPHash qph = new QPHash();
 
-		//TODO Use the FileInput functions to read the two files.
-		// Input the elements of those two files into two hash tables,
-		// one file into a ChainingHash object and the other into a QPHash object.
 		for(String w : s)
 		{
 			ch.insert(w);
@@ -29,14 +20,10 @@ public class Test
 			qph.insert(w);
 		}
 
-		//TODO Initialize necessary variables for calculating the square error
-		// and most distant word.
         String word = "";
         float total = 0;
         float max = 0;
 
-		//TODO Iterate through the first hash table and add sum the squared error
-		// for these words.
         String u = qph.getNextKey();
         while(null != u)
         {
@@ -55,9 +42,6 @@ public class Test
 
             u = qph.getNextKey();
         }
-
-		//TODO Find  words in the second hash table that are not in the first and add their squared error
-		// to the total
 
         String v = ch.getNextKey();
         while(null != v)
@@ -81,7 +65,8 @@ public class Test
             v = ch.getNextKey();
         }
 
-		//TODO Print the total calculated squared error for the two tables and also the word with the highest distance.
+        System.out.println("Most different square difference: " + word + " (square difference of " + max + ")");
+        System.out.println("Total comparative error: " + total);
 	}
 
 }
