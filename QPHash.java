@@ -1,6 +1,8 @@
+import java.util.NoSuchElementException;
+
 public class QPHash
 {
-    private class Node
+    private class Record
     {
         int count;
         String key;
@@ -9,7 +11,7 @@ public class QPHash
          * Constructor
          * @param keyToAdd key to add to field.
          */
-        public Node(String keyToAdd)
+        public Record(String keyToAdd)
         {
             this.count = 1;
             this.key = keyToAdd;
@@ -18,7 +20,7 @@ public class QPHash
 
     int tableSize;
     int current;
-    Node[] table;
+    Record[] table;
 
     /**
      * Constructor with default size.
@@ -27,7 +29,7 @@ public class QPHash
     {
         this.tableSize = 64301;
         this.current = 0;
-        this.table = new Node[this.tableSize];
+        this.table = new Record[this.tableSize];
     }
 
     /**
@@ -37,7 +39,7 @@ public class QPHash
     public QPHash(int startSize){
         this.tableSize = startSize;
         this.current = 0;
-        this.table = new Node[this.tableSize];
+        this.table = new Record[this.tableSize];
     }
 
     /**
@@ -47,14 +49,36 @@ public class QPHash
      * @return Returns the next element of the hash table. Returns null if it is at its end.
      */
     public String getNextKey(){
+        Record r = this.next();
+        return r.key;
         //TODO returns the next key in the hash table.
         //You will need external tracking variables to account for this.
-        return "";
     }
 
-    private Node next()
+    private Record next()
     {
+        if(this.current < this.tableSize)
+        {
+            while(this.table[this.current] == null && this.current < this.tableSize)
+            {
+                this.current++;
+            }
 
+            if(this.current == this.tableSize)
+            {
+                throw new NoSuchElementException();
+            }
+            else
+            {
+                Record r = this.table[this.current];
+                this.current++;
+                return r;
+            }
+        }
+        else
+        {
+            throw new NoSuchElementException();
+        }
     }
 
     /**
@@ -68,7 +92,7 @@ public class QPHash
         int hashCode = this.hash(keyToAdd);
         int i = hashCode % this.tableSize;
 
-        Node r = new Node(keyToAdd);
+        Record r = new Record(keyToAdd);
 
         if(null == this.table[i])
         {
@@ -84,7 +108,7 @@ public class QPHash
 
                 if(null == this.table[j])
                 {
-                    r = new Node(keyToAdd);
+                    r = new Record(keyToAdd);
                     this.table[j] = r;
                 }
                 else
