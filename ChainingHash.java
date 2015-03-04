@@ -1,18 +1,20 @@
 public class ChainingHash
 {
-    private class Node
+    private class Record
     {
         int count;
+        boolean visited;
         String key;
-        Node next;
+        Record next;
 
         /**
          * Constructor
          * @param keyToAdd key to add to field.
          */
-        public Node(String keyToAdd)
+        public Record(String keyToAdd)
         {
             this.count = 1;
+            this.visited = false;
             this.key = keyToAdd;
             this.next = null;
         }
@@ -20,7 +22,7 @@ public class ChainingHash
 
     int tableSize;
     int current;
-    Node[] table;
+    Record[] table;
 
     /**
      * Constructor with default size.
@@ -29,7 +31,7 @@ public class ChainingHash
     {
         this.tableSize = 31753;
         this.current = 0;
-        this.table = new Node[this.tableSize];
+        this.table = new Record[this.tableSize];
     }
 
     /**
@@ -40,7 +42,7 @@ public class ChainingHash
     {
         this.tableSize = startSize;
         this.current = 0;
-        this.table = new Node[startSize];
+        this.table = new Record[startSize];
     }
 
     /**
@@ -49,10 +51,56 @@ public class ChainingHash
      * It should return null once it has gone through all elements
      * @return Returns the next element of the hash table. Returns null if it is at its end.
      */
-    public String getNextKey(){
-        //TODO returns the next key in the hash table.
-        //You will need external tracking variables to account for this.
-        return "";
+    public String getNextKey()
+    {
+        Record r = this.nextRecord();
+
+        if(null != r)
+        {
+            return r.key;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private Record nextRecord()
+    {
+        if(this.current < this.tableSize)
+        {
+            while(this.current < this.tableSize && null == this.table[this.current])
+            {
+                this.current++;
+            }
+
+
+            if(this.current == this.tableSize)
+            {
+                return null;
+            }
+            else
+            {
+                Record r = this.table[this.current];
+                while(r.visited)
+                {
+                    r = r.next;
+                }
+
+                r.visited = true;
+
+                if(r.visited && r.next == null)
+                {
+                    this.current++;
+                }
+
+                return r;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -65,7 +113,7 @@ public class ChainingHash
         int hashCode = this.hash(keyToAdd);
         int i = hashCode % this.tableSize;
 
-        Node r = new Node(keyToAdd);
+        Record r = new Record(keyToAdd);
 
         if(null == this.table[i])
         {
@@ -86,7 +134,7 @@ public class ChainingHash
             }
             else
             {
-                r.next = new Node(keyToAdd);
+                r.next = new Record(keyToAdd);
             }
         }
     }
@@ -106,14 +154,21 @@ public class ChainingHash
         }
         else
         {
-            Node r = this.table[i];
+            Record r = this.table[i];
 
             while(!r.key.equals(keyToFind) && null != r.next)
             {
                 r = r.next;
             }
 
-            return r.count;
+            if(r.key.equals(keyToFind))
+            {
+                return r.count;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 

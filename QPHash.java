@@ -1,5 +1,3 @@
-import java.util.NoSuchElementException;
-
 public class QPHash
 {
     private class Record
@@ -49,24 +47,30 @@ public class QPHash
      * @return Returns the next element of the hash table. Returns null if it is at its end.
      */
     public String getNextKey(){
-        Record r = this.next();
-        return r.key;
-        //TODO returns the next key in the hash table.
-        //You will need external tracking variables to account for this.
+        Record r = this.nextRecord();
+
+        if(null != r)
+        {
+            return r.key;
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    private Record next()
+    private Record nextRecord()
     {
         if(this.current < this.tableSize)
         {
-            while(this.table[this.current] == null && this.current < this.tableSize)
+            while(this.current < this.tableSize && null == this.table[this.current])
             {
                 this.current++;
             }
 
             if(this.current == this.tableSize)
             {
-                throw new NoSuchElementException();
+                return null;
             }
             else
             {
@@ -77,7 +81,7 @@ public class QPHash
         }
         else
         {
-            throw new NoSuchElementException();
+            return null;
         }
     }
 
@@ -89,8 +93,8 @@ public class QPHash
      */
     public void insert(String keyToAdd)
     {
-        int hashCode = this.hash(keyToAdd);
-        int i = hashCode % this.tableSize;
+        int hc = this.hash(keyToAdd);
+        int i = hc % this.tableSize;
 
         Record r = new Record(keyToAdd);
 
@@ -159,9 +163,30 @@ public class QPHash
      * @return returns the number of times that key has been added.
      */
     public int findCount(String keyToFind){
-        //TODO Implement findCount such that it returns the number of times keyToFind
-        // has been added to the data structure.
-        return 0;
+        int hc = this.hash(keyToFind);
+        int i = hc % this.tableSize;
+
+        if(null == this.table[i])
+        {
+            return 0;
+        }
+        else if(null != this.table[i] && !this.table[i].key.equals(keyToFind))
+        {
+            int j = this.probe(i, keyToFind);
+
+            if(null == this.table[j])
+            {
+                return 0;
+            }
+            else
+            {
+                return this.table[j].count;
+            }
+        }
+        else
+        {
+            return this.table[i].count;
+        }
     }
 
     /**
