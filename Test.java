@@ -24,13 +24,6 @@ public class Test {
 			qph.insert(w);
 		}
 
-        String[] a = new String[100];
-
-        for(int i = 0; i < 100; i++)
-        {
-            a[i] = qph.getNextKey();
-        }
-
         int z = 0;
 
 		//TODO Initialize necessary variables for calculating the square error
