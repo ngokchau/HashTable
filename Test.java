@@ -1,15 +1,27 @@
+/**
+ * Chau Ngo
+ */
+
 public class Test
 {
 	public static void main(String[] args)
     {
+
 		FileInput.init();
 
 		String[] s = FileInput.readShakespeare();
 		String[] b = FileInput.readBacon();
 
+        /**
+         * Initialize hash tables.
+         */
 		ChainingHash ch = new ChainingHash();
 		QPHash qph = new QPHash();
 
+        /**
+         * Input elements from two files into hash tables.
+         * Shakespeare in ChainingHash, Bacon in QPHash.
+         */
 		for(String w : s)
 		{
 			ch.insert(w);
@@ -20,10 +32,17 @@ public class Test
 			qph.insert(w);
 		}
 
+        /**
+         * Variables for calculating square error
+         */
         String word = "";
         float total = 0;
         float max = 0;
 
+        /**
+         * Iterate through the first hash table and add sum the squared error
+         * for these words.
+         */
         String u = qph.getNextKey();
         while(null != u)
         {
@@ -43,6 +62,10 @@ public class Test
             u = qph.getNextKey();
         }
 
+        /**
+         * Find words in the second table that are not in the first and add
+         * square error to the total.
+         */
         String v = ch.getNextKey();
         while(null != v)
         {
@@ -65,6 +88,9 @@ public class Test
             v = ch.getNextKey();
         }
 
+        /**
+         * Print the results.
+         */
         System.out.println("Total square error: " + total);
         System.out.println("Most different word: " + word + " (" + max + ")");
 	}

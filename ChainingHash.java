@@ -1,3 +1,7 @@
+/**
+ * Chau Ngo
+ */
+
 public class ChainingHash
 {
     private class Record
@@ -65,6 +69,10 @@ public class ChainingHash
         }
     }
 
+    /**
+     * Helper method to that retrieves the next Record.
+     * @return Record
+     */
     private Record nextRecord()
     {
         if(this.current < this.tableSize)

@@ -1,3 +1,7 @@
+/**
+ * Chau Ngo
+ */
+
 public class QPHash
 {
     private class Record
@@ -59,6 +63,10 @@ public class QPHash
         }
     }
 
+    /**
+     * Helper method to that retrieves the next Record.
+     * @return Record
+     */
     private Record nextRecord()
     {
         if(this.current < this.tableSize)
@@ -130,6 +138,7 @@ public class QPHash
     /**
      * Quadratic probing.
      * @param c the starting index.
+     * @param k the key to be inserted.
      * @return j the index to insert new key.
      */
     private int probe(int c, String k)
